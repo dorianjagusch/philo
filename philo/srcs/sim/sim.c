@@ -1,36 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_fnct.c                                       :+:      :+:    :+:   */
+/*   sim.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/19 03:02:54 by djagusch          #+#    #+#             */
-/*   Updated: 2023/04/20 14:43:56 by djagusch         ###   ########.fr       */
+/*   Created: 2023/04/20 14:22:47 by djagusch          #+#    #+#             */
+/*   Updated: 2023/04/20 14:24:25 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	**init_philos(t_data *data, t_philo **philos)
+void	sim(t_philo *philo)
 {
-	int	i;
-
-	i = 0;
-	philos = malloc(sizeof(t_philo *) * data->n_philo);
-	if (!philos)
-		return (0);
-	while (i < data->n_philo)
-	{
-		philos[i] = ft_calloc(1, sizeof(t_philo));
-		if (!philos[i])
-		{
-			ft_free_array((void *)&philos, i);
-			ft_error(mem_err);
-			break ;
-		}
-		philos[i]->id = i + 1;
-		philos[i]->data = data;
-		i++;
-	}
+	
 }

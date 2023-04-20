@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 02:39:01 by djagusch          #+#    #+#             */
-/*   Updated: 2023/04/19 04:11:08 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:59:02 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,18 @@ static void	free_forks(t_data *data, int n_philo)
 	}
 }
 
-void	ft_clear(t_philo **philo, t_data *data)
+void	ft_clear(t_data *data, t_philo **philo)
 {
 	int	n_philo;
 
 	if (data)
 	{
 		n_philo = data->n_philo;
-		free_forks(data, n_philo);
-		if (pthread_mutex_destroy(&(data->print)) != 0)
-			ft_error(mutex_destroy_err);
+		if (data->forks)
+			free_forks(data, n_philo);
+		if (data->print)
+			if (pthread_mutex_destroy(&(data->print)) != 0)
+				ft_error(mutex_destroy_err);
 		if (data->n_active)
 			ft_free(data->n_active);
 		if (philo)
@@ -49,7 +51,7 @@ void	ft_clear(t_philo **philo, t_data *data)
 
 int	main(int ac, char **av)
 {
-	t_philo	**philo;
+	t_philo	**philos;
 	t_data	*data;
 
 	if (ac < 5)
@@ -57,12 +59,12 @@ int	main(int ac, char **av)
 	if (ac > 6)
 		ft_error(barg_err);
 	data = NULL;
-	philo = NULL;
+	philos = NULL;
 	init_data(ac, av);
 	if (data)
-		init_philo(data, philo);
-	if (philo)
-		ft_philo(data, philo);
-	ft_clear(philo, data);
+		init_philo(data, philos);
+	if (philos)
+		ft_philo(data, philos);
+	ft_clear(data, philos);
 	return (0);
 }

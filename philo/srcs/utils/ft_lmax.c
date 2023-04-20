@@ -6,13 +6,13 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 14:48:15 by djagusch          #+#    #+#             */
-/*   Updated: 2023/04/08 15:26:21 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:33:07 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-uint64_t	ft_lmax(uint64_t a, uint64_t b)
+long	ft_lmax(long a, long b)
 {
 	if (a > b)
 		return (a);

@@ -6,7 +6,7 @@
 #    By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 11:46:33 by djagusch          #+#    #+#              #
-#    Updated: 2023/04/19 04:14:29 by djagusch         ###   ########.fr        #
+#    Updated: 2023/04/20 14:47:18 by djagusch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,11 +28,11 @@ S = srcs
 O = objs
 I = incl
 
-FILES := main ft_philo\
-	data_fnct philo_fnct \
+FILES := main \
+	data_fnct philo_fnct sim_set_up \
+	time actions sim \
 	ft_atol ft_bzero ft_calloc ft_error \
 	ft_free_array ft_free ft_isint ft_lmax
-	
 
 HEADER = philo.h ft_error.h
 HEADER := $(addprefix $I/,$(HEADER))

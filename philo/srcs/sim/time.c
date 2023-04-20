@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_fnct.c                                       :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/19 03:02:54 by djagusch          #+#    #+#             */
-/*   Updated: 2023/04/20 14:43:56 by djagusch         ###   ########.fr       */
+/*   Created: 2023/04/20 14:25:26 by djagusch          #+#    #+#             */
+/*   Updated: 2023/04/20 14:49:43 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	**init_philos(t_data *data, t_philo **philos)
+long	set_time(t_philo *philo, int mode)
 {
-	int	i;
+	struct timeval	time;
 
-	i = 0;
-	philos = malloc(sizeof(t_philo *) * data->n_philo);
-	if (!philos)
-		return (0);
-	while (i < data->n_philo)
-	{
-		philos[i] = ft_calloc(1, sizeof(t_philo));
-		if (!philos[i])
-		{
-			ft_free_array((void *)&philos, i);
-			ft_error(mem_err);
-			break ;
-		}
-		philos[i]->id = i + 1;
-		philos[i]->data = data;
-		i++;
-	}
+	gettimeofday(&time, NULL);
+	philo->cur = time.tv_sec * 1000 + time.tv_usec * 0.001 - philo->data->start;
+	philo->tod = ft_lmax((philo->cur + philo->tod) * mode, philo->tod);
+	return (philo->cur);
 }
