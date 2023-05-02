@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 02:40:22 by djagusch          #+#    #+#             */
-/*   Updated: 2023/04/20 15:36:35 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/05/02 15:15:21 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	ft_philo(t_data *data, t_philo **philos);
 long	ft_lmax(long a, long b);
 void	ft_clear(t_data *data, t_philo **philos);
 long	set_time(t_philo *philo, int mode);
+long	get_time(void);
 void	philo_action(t_philo *philo, int action);
 
 #endif

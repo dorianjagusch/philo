@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/20 14:25:26 by djagusch          #+#    #+#             */
-/*   Updated: 2023/05/02 15:13:15 by djagusch         ###   ########.fr       */
+/*   Created: 2023/05/02 15:05:50 by djagusch          #+#    #+#             */
+/*   Updated: 2023/05/02 15:18:50 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	get_time(void)
+int	monitor(t_data *data, t_philo **philo)
 {
-	struct timeval	time;
+	int	i;
 
-	gettimeofday(&time, NULL);
-	return (time.tv_sec * 1000 + time.tv_usec * 0.001);
-}
-
-long	set_time(t_philo *philo, int mode)
-{
-	philo->cur = get_time() - philo->data->start;
-	philo->tod = ft_lmax((philo->cur + philo->tod) * mode, philo->tod);
-	return (philo->cur);
+	i = 0;
+	while (i < data->n_philo)
+	{
+		if (philo[i]->tod < get_time())
+		{
+			pthread_mutex_lock(data->print);
+			data->ended = 1;
+			printf("[%ld] %d has died\n", get_time(), i);
+			pthread_mutex_unlock(data->print);
+		}
+	}
 }
