@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 14:25:26 by djagusch          #+#    #+#             */
-/*   Updated: 2023/05/02 15:13:15 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/10 17:28:05 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ long	get_time(void)
 long	set_time(t_philo *philo, int mode)
 {
 	philo->cur = get_time() - philo->data->start;
-	philo->tod = ft_lmax((philo->cur + philo->tod) * mode, philo->tod);
+	philo->tod = ft_lmax((philo->cur + philo->data->times[DIE]) * mode,
+		philo->tod);
 	return (philo->cur);
 }

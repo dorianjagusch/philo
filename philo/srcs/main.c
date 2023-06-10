@@ -6,25 +6,25 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 02:39:01 by djagusch          #+#    #+#             */
-/*   Updated: 2023/04/20 14:59:02 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/10 16:16:13 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	free_forks(t_data *data, int n_philo)
+void	free_mutex_array(pthread_mutex_t *mutexes, int n_philo)
 {
 	int	i;
 
 	i = -1;
-	if (data->forks)
+	if (mutexes)
 	{
 		while (++i < n_philo)
 		{
-			if (pthread_mutex_destroy(&(data->forks[i])) != 0)
+			if (pthread_mutex_destroy(mutexes + i) != 0)
 				ft_error(mutex_destroy_err);
 		}
-		ft_free(data->forks);
+		free(mutexes);
 	}
 }
 
@@ -36,16 +36,13 @@ void	ft_clear(t_data *data, t_philo **philo)
 	{
 		n_philo = data->n_philo;
 		if (data->forks)
-			free_forks(data, n_philo);
-		if (data->print)
-			if (pthread_mutex_destroy(&(data->print)) != 0)
-				ft_error(mutex_destroy_err);
-		if (data->n_active)
-			ft_free(data->n_active);
+			free_mutex_array(data->forks, n_philo);
+		if (data->locks)
+			free_mutex_array(data->locks, 2);
 		if (philo)
 			ft_free_array((void *)&philo, n_philo);
 		if (data)
-			ft_free(data);
+			free(data);
 	}
 }
 
@@ -53,18 +50,22 @@ int	main(int ac, char **av)
 {
 	t_philo	**philos;
 	t_data	*data;
+	int		error;
 
+	error = 0;
 	if (ac < 5)
-		ft_error(farg_err);
+		error = ft_error(farg_err);
 	if (ac > 6)
-		ft_error(barg_err);
-	data = NULL;
-	philos = NULL;
-	init_data(ac, av);
+		error = ft_error(barg_err);
+	if (error)
+		return (error);
+	data = 0;
+	philos = 0;
+	data = init_data(ac, av);
 	if (data)
-		init_philo(data, philos);
+		philos = init_philos(data);
 	if (philos)
-		ft_philo(data, philos);
+		error = ft_philo(data, philos);
 	ft_clear(data, philos);
-	return (0);
+	return (error);
 }

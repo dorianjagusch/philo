@@ -6,11 +6,22 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/28 14:56:42 by djagusch          #+#    #+#             */
-/*   Updated: 2023/03/14 14:17:25 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/10 13:08:56 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	ft_bzero(void *s, size_t n)
+{
+	size_t			i;
+	unsigned char	*s2;
+
+	i = 0;
+	s2 = s;
+	while (i < n)
+		s2[i++] = '\0';
+}
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {

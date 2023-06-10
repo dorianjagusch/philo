@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 14:25:28 by djagusch          #+#    #+#             */
-/*   Updated: 2023/04/20 15:42:15 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/10 18:07:37 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,44 +17,44 @@ void	philo_eat(t_philo *philo)
 	int	left;
 	int	right;
 
-	pthread_mutex_unlock(philo->data->print);
-	left = philo->id - 1;
-	right = philo->id % philo->data->n_philo;
+	left = (philo->id + (philo->id & 1)) % philo->data->n_philo;
+	right = (philo->id + (philo->id & 0)) % philo->data->n_philo;
 	pthread_mutex_lock((philo->data->forks) + left);
-	philo->fork_l = 1;
 	if (philo->data->n_philo == 1)
 	{
 		philo_wait(philo, DIE);
+		pthread_mutex_unlock((philo->data->forks) + left);
 		return ;
 	}
 	philo_action(philo, FORK);
 	pthread_mutex_lock(philo->data->forks + right);
-	philo->fork_r = 1;
 	philo_action(philo, FORK);
 	philo_action(philo, EAT);
-	philo->fork_l = 0;
-	philo->fork_r = 0;
 	pthread_mutex_unlock((philo->data->forks) + left);
 	pthread_mutex_unlock((philo->data->forks) + right);
 }
 
-static int	philo_wait(t_philo *philo, int action)
+void	philo_wait(t_philo *philo, int action)
 {
-	while (set_time(philo, CUR) < philo->data->times[action])
+	long	start;
+
+	start = philo->cur;
+	while (set_time(philo, CUR) < philo->data->times[action] + start)
 	{
-		if (philo->cur > philo->data->times[DIE])
+		if (philo->cur > philo->tod)
 		{
 			philo_action(philo, DIE);
-			return (0);
+			return ;
 		}
-		usleep(50);
+		usleep(10);
 	}
-	return (1);
+	if (action == EAT)
+		set_time(philo, DEATH);
+	return ;
 }
 
 void	philo_action(t_philo *philo, int action)
 {
-	struct timeval	time;
 	const char		*actions[] = {
 		"died",
 		"is eating",
@@ -63,18 +63,21 @@ void	philo_action(t_philo *philo, int action)
 		"has taken a fork"
 	};
 
-	pthread_mutex_lock(philo->data->print);
-	printf("[%lu] %d %s\n",
-		set_time(philo, CUR), philo->id, actions[action]);
-	if (action == EAT && (!philo->fork_l || !philo->fork_r))
-		philo_eat(philo);
-	else if (action != DIE && action != THINK)
+	pthread_mutex_lock(&((philo->data->locks)[DATA]));
+	if (philo->data->ended == 0)
 	{
-		pthread_mutex_unlock(philo->data->print);
-		philo_wait(philo, action);
-		return ;
+		printf("[%lu] %d %s\n", set_time(philo, CUR), philo->id,
+			actions[action]);
+		if (action == DIE)
+		{
+			philo->data->ended = 1;
+			printf("bitch dies by its own Hand\n");
+			pthread_mutex_unlock(&((philo->data->locks)[DATA]));
+			return ;
+		}
 	}
-	else if (action == DIE)
-		philo->data->ended = 1;
-	pthread_mutex_unlock(philo->data->print);
+	pthread_mutex_unlock(&((philo->data->locks)[DATA]));
+	if (action < THINK)
+		philo_wait(philo, action);
+	usleep(10);
 }

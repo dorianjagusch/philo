@@ -6,48 +6,29 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 16:02:55 by djagusch          #+#    #+#             */
-/*   Updated: 2023/04/19 03:26:18 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/10 13:13:15 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static BOOL	ft_isdigit(int c)
-{
-	if ('0' <= c && c <= '9')
-		return (c);
-	return (0);
-}
-
-static BOOL	ft_isnbr(char *str)
-{
-	int	flag;
-
-	flag = 0;
-	while (*str)
-	{
-		if (ft_isdigit(*str) || ((*str == '+' || *str == '-') && str + 1
-				&& ft_isdigit(*(str + 1))) && flag == 0)
-		{
-			str++;
-			if (*str == '+' || *str == '-')
-				flag = 1;
-			continue ;
-		}
-		return (0);
-	}	
-	return (1);
-}
-
 long	ft_isint(char *str)
 {
 	long	nbr;
+	char	*num;
 
-	if (str && ft_isnbr(str))
+	if (str)
 	{
 		nbr = ft_atol(str);
-		if ((long) INT_MIN <= nbr && nbr <= (long) INT_MAX)
+		num = ft_itoa(nbr);
+		if (ft_strcmp(str, num) == 0
+			&& (long) INT_MIN <= nbr && nbr <= (long) INT_MAX)
+		{
+			free(num);
 			return (nbr);
+		}
+		free(num);
 		return (LONG_MAX);
 	}
+	return (LONG_MAX);
 }

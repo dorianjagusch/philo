@@ -6,15 +6,16 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 03:02:54 by djagusch          #+#    #+#             */
-/*   Updated: 2023/04/20 14:43:56 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/10 14:00:02 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	**init_philos(t_data *data, t_philo **philos)
+t_philo	**init_philos(t_data *data)
 {
-	int	i;
+	t_philo	**philos;
+	int		i;
 
 	i = 0;
 	philos = malloc(sizeof(t_philo *) * data->n_philo);
@@ -33,4 +34,5 @@ t_philo	**init_philos(t_data *data, t_philo **philos)
 		philos[i]->data = data;
 		i++;
 	}
+	return (philos);
 }
