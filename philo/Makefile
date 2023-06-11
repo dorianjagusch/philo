@@ -6,7 +6,7 @@
 #    By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 11:46:33 by djagusch          #+#    #+#              #
-#    Updated: 2023/06/10 17:57:46 by djagusch         ###   ########.fr        #
+#    Updated: 2023/06/11 16:53:10 by djagusch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ COLOUR_END=\033[0m
 
 ### SET UP ###
 CC = cc
-CFLAGS = -Wall -Werror -Wall -I$I -O3
+CFLAGS = -Wall -Werror -Wall -I$I
 
 RM = /bin/rm -f
 RMDIR = /bin/rmdir -p
@@ -59,7 +59,7 @@ DEBUG = philo_debug
 all: $(NAME) $(DEBUG)
 
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJS) -lpthread -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) -lpthread -o $(NAME) -O2
 	@echo "$(COLOUR_GREEN) $(NAME) created$(COLOUR_END)"
 
 $O:
@@ -69,13 +69,12 @@ $O/%.o: $S/%.c $(HEADER) | $O
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(DEBUG): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) -g -fsanitize=thread $(OBJS) -lpthread -o philo_debug -g -static-libsan -fsanitize=thread
+	@$(CC) $(CFLAGS) -g -fsanitize=thread $(OBJS) -lpthread -o philo_debug -static-libsan
 	@echo "$(COLOUR_GREEN) $(DEBUG) created$(COLOUR_END)"
 
 ### CLEANING
 
 clean:
-	@echo "$(COLOUR_RED) $(LIBFT) removed$(COLOUR_END)"
 	@$(RM) $(OBJS)
 	@if [ -d $O ]; then $(RM) -rf $(O_DIRS) $O; fi
 

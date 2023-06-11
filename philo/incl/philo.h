@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 02:40:22 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/10 17:20:00 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/11 15:44:02 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@
 # include <pthread.h>
 # include <sys/time.h>
 
+# define N_MUT 3
+
 # define BOOL int
-# define PRINT 0
+# define MEALS 0
 # define DATA 1
+# define PRINT 2
 
 # define CUR 0
 # define DEATH 1
@@ -38,12 +41,12 @@
 typedef struct s_data
 {
 	long			start;
-	int				n_active;
+	int				active;
 	int				n_philo;
 	long			times[3];
-	int				meals;
 	int				ended;
-	pthread_mutex_t	*locks;
+	int				meals;
+	pthread_mutex_t	*lock;
 	pthread_mutex_t	*forks;
 	int				error;
 }					t_data;
@@ -53,7 +56,9 @@ typedef struct s_philo
 	int		id;
 	long	cur;
 	long	tod;
-	int		meals_eaten;
+	int		fork1;
+	int		fork2;
+	int		meals_left;
 	t_data	*data;
 }			t_philo;
 

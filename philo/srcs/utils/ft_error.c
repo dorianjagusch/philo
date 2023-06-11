@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 11:02:27 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/10 13:26:00 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/11 14:18:05 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_error(int error)
 		"All arguments must be positive integral types\n",
 		"Malloc failed\n",
 		"mutex creation failed\n",
-		"mutex destroy failed\n"
+		"mutex destroy failed\n",
 		"thread creation failed\n",
 		"thread joining failed\n"
 	};

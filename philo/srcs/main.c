@@ -6,20 +6,20 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 02:39:01 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/10 16:16:13 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/11 16:00:22 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_mutex_array(pthread_mutex_t *mutexes, int n_philo)
+void	free_mutex_array(pthread_mutex_t *mutexes, int n_mutexes)
 {
 	int	i;
 
 	i = -1;
 	if (mutexes)
 	{
-		while (++i < n_philo)
+		while (++i < n_mutexes)
 		{
 			if (pthread_mutex_destroy(mutexes + i) != 0)
 				ft_error(mutex_destroy_err);
@@ -37,8 +37,8 @@ void	ft_clear(t_data *data, t_philo **philo)
 		n_philo = data->n_philo;
 		if (data->forks)
 			free_mutex_array(data->forks, n_philo);
-		if (data->locks)
-			free_mutex_array(data->locks, 2);
+		if (data->lock)
+			free_mutex_array(data->lock, N_MUT);
 		if (philo)
 			ft_free_array((void *)&philo, n_philo);
 		if (data)

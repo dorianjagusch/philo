@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 02:50:42 by djagusch          #+#    #+#             */
-/*   Updated: 2023/04/19 03:57:57 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/11 12:15:24 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ enum e_errors
 	mutex_create_err,
 	mutex_destroy_err,
 	thread_err,
+	sleep_err,
 	join_err,
 };
 

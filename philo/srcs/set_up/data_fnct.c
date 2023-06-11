@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 03:02:56 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/10 13:49:52 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/11 17:52:32 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	is_valid(char *param)
 	long	nbr;
 
 	nbr = ft_isint(param);
-	if (nbr > INT_MAX || nbr < 0)
+	if (nbr > INT_MAX || nbr <= 0)
 		return (-1);
 	return ((int) nbr);
 }
@@ -33,7 +33,7 @@ static pthread_mutex_t	*set_mutexes(int number)
 		ft_error(mem_err);
 	while (i < number)
 	{
-		if (pthread_mutex_init(mutexes + i, NULL) != 0)
+		if (pthread_mutex_init(mutexes + i, NULL))
 		{
 			while (--i > 0)
 				free(mutexes + i);
@@ -85,8 +85,8 @@ t_data	*init_data(int ac, char **av)
 	if (!fill_data(ac, av, data))
 		return (NULL);
 	data->forks = set_mutexes(data->n_philo);
-	data->locks = set_mutexes(2);
-	if (!data->forks || !data->locks)
+	data->lock = set_mutexes(N_MUT);
+	if (!data->forks || !data->lock)
 		ft_clear(data, NULL);
 	return (data);
 }
