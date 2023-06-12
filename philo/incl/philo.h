@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 02:40:22 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/11 15:44:02 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/12 09:14:32 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ typedef struct s_data
 
 typedef struct s_philo
 {
-	int		id;
-	long	cur;
-	long	tod;
-	int		fork1;
-	int		fork2;
-	int		meals_left;
-	t_data	*data;
+	int				id;
+	long			cur;
+	long			tod;
+	pthread_mutex_t	*fork1;
+	pthread_mutex_t	*fork2;
+	int				meals_left;
+	t_data			*data;
 }			t_philo;
 
 t_data	*init_data(int ac, char **av);

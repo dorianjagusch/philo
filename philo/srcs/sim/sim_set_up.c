@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 04:12:36 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/11 17:57:46 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/12 09:04:46 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ static void	monitor_threads(t_data *data, t_philo **philo)
 
 	i = 0;
 	data->active += 1;
+	pthread_mutex_unlock(data->lock + DATA);
 	while (1)
 	{
-		pthread_mutex_unlock(data->lock + DATA);
 		usleep(50);
 		pthread_mutex_lock(data->lock + DATA);
 		if (philo[i]->tod < get_time() - data->start || data->ended)
 		{
-			printf("Parent detected death of %d at %d and should die at %ld\n", i + 1,
-				data->ended, philo[i]->tod);
+			printf("Parent detected death of %d at %ld and should die at %ld\n", i + 1,
+				get_time() - data->start, philo[i]->tod);
 			if (!data->ended)
 			{
 				data->ended = 1;
@@ -37,6 +37,7 @@ static void	monitor_threads(t_data *data, t_philo **philo)
 			break ;
 		}
 		i = (i + 1) % data->n_philo;
+		pthread_mutex_unlock(data->lock + DATA);
 	}
 }
 

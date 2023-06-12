@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 03:02:54 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/11 17:13:08 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/12 09:15:11 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	get_forks(t_philo *philo)
 {
-	if (philo->data->n_philo & 1)
-	{
-		philo->fork1 = philo->id - (philo->id & 1);
-		philo->fork2 = (philo->id - ((philo->id & 1) ^ 1))
-			% philo->data->n_philo;
-	}
-	else
+	// if (philo->data->n_philo & 1)
+	// {
+	// 	philo->fork1 = philo->id - (philo->id & 1);
+	// 	philo->fork2 = (philo->id - ((philo->id & 1) ^ 1))
+	// 		% philo->data->n_philo;
+	// }
+	// else
 		philo->fork1 = philo->id - 1;
 		philo->fork2 = philo->id % philo->data->n_philo;
 }
@@ -46,7 +46,8 @@ t_philo	**init_philos(t_data *data)
 		philos[i]->id = i + 1;
 		philos[i]->data = data;
 		philos[i]->meals_left = data->meals;
-		get_forks(philos[i]);
+		philos[i]->fork1 = data->forks + (i + (i & 1)) % data->n_philo;
+		philos[i]->fork2 = data->forks + (i + (~i & 1)) % data->n_philo;
 		i++;
 	}
 	return (philos);

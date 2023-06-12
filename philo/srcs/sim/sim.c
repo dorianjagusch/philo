@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 12:17:15 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/11 17:57:15 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/12 09:06:18 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static void	ft_mutex_barrier(int *n_active, int n_philo, pthread_mutex_t *lock)
 
 static void	update_meals(t_philo *philo)
 {
-	printf("philo %d has %d meals left\n", philo->id, philo->meals_left);
 	if (philo->data->meals > 0)
 	{
+		printf("philo %d has %d meals left\n", philo->id, philo->meals_left);
 		printf("updated meal\n");
 		if (--philo->meals_left == 0)
 		{
@@ -43,16 +43,16 @@ static void	update_meals(t_philo *philo)
 
 static void	run_sim(t_philo *philo)
 {
-	pthread_mutex_lock(philo->data->lock + DATA);
 	while (1)
 	{
+		pthread_mutex_lock(philo->data->lock + DATA);
 		printf("Philo checking %d\n", philo->id);
 		if (philo->data->ended || philo->data->active <= 1)
 			break ;
 		pthread_mutex_unlock(philo->data->lock + DATA);
 		philo_eat(philo);
 		update_meals(philo);
-		usleep(1);
+		usleep(100);
 		pthread_mutex_lock(philo->data->lock + DATA);
 		if (philo->data->ended || philo->data->active <= 1)
 			break ;
@@ -66,7 +66,6 @@ static void	run_sim(t_philo *philo)
 		pthread_mutex_unlock(philo->data->lock + DATA);
 		philo_action(philo, THINK);
 		usleep(1);
-		pthread_mutex_lock(philo->data->lock + DATA);
 	}
 	pthread_mutex_unlock(philo->data->lock + DATA);
 	printf("Philo %d done\n", philo->id);
@@ -82,10 +81,10 @@ void	*routine(void *arg)
 		philo->data->lock + DATA);
 	printf("active: %d\n", philo->data->active);
 	set_time(philo, DEATH);
-	if (philo->id % 2 == 1)
+	if (philo->id % 2 == 0)
 	{
 		philo_action(philo, THINK);
-		usleep(50);
+		usleep(20);
 	}
 	printf("Philo start %d\n", philo->id);
 	run_sim(philo);
