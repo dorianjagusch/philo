@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 02:40:22 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/12 09:14:32 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/14 16:12:16 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@
 # define N_MUT 3
 
 # define BOOL int
-# define MEALS 0
-# define DATA 1
+# define DATA 0
+# define GAME 1
 # define PRINT 2
+
+# define SLEEP_TIME 20
 
 # define CUR 0
 # define DEATH 1
@@ -55,6 +57,7 @@ typedef struct s_philo
 {
 	int				id;
 	long			cur;
+	int				large;
 	long			tod;
 	pthread_mutex_t	*fork1;
 	pthread_mutex_t	*fork2;

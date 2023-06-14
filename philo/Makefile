@@ -6,7 +6,7 @@
 #    By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 11:46:33 by djagusch          #+#    #+#              #
-#    Updated: 2023/06/11 16:53:10 by djagusch         ###   ########.fr        #
+#    Updated: 2023/06/14 16:16:28 by djagusch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -69,7 +69,7 @@ $O/%.o: $S/%.c $(HEADER) | $O
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(DEBUG): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) -g -fsanitize=thread $(OBJS) -lpthread -o philo_debug -static-libsan
+	@$(CC) $(CFLAGS) -g -fsanitize=address $(OBJS) -lpthread -o philo_debug -static-libsan
 	@echo "$(COLOUR_GREEN) $(DEBUG) created$(COLOUR_END)"
 
 ### CLEANING
@@ -79,7 +79,8 @@ clean:
 	@if [ -d $O ]; then $(RM) -rf $(O_DIRS) $O; fi
 
 fclean : clean
-	@$(RM) $(NAME)
+	@$(RM) $(NAME) $(DEBUG)
+	@echo "$(COLOUR_RED) $(NAME) removed$(COLOUR_END)"
 	@echo "$(COLOUR_RED) $(NAME) removed$(COLOUR_END)"
 
 re: fclean $(NAME)

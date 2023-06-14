@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 04:12:36 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/12 09:04:46 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/14 16:25:58 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ static void	monitor_threads(t_data *data, t_philo **philo)
 
 	i = 0;
 	data->active += 1;
-	pthread_mutex_unlock(data->lock + DATA);
+	pthread_mutex_unlock(data->lock + GAME);
 	while (1)
 	{
-		usleep(50);
+		usleep(100 + (100 * philo[0]->large));
 		pthread_mutex_lock(data->lock + DATA);
 		if (philo[i]->tod < get_time() - data->start || data->ended)
 		{
@@ -33,7 +33,6 @@ static void	monitor_threads(t_data *data, t_philo **philo)
 				printf("Parent murdered %d at %ld and should die at %ld\n", i + 1,
 					get_time() - data->start, philo[i]->tod);
 			}
-			pthread_mutex_unlock(data->lock + DATA);
 			break ;
 		}
 		i = (i + 1) % data->n_philo;
@@ -71,7 +70,6 @@ static void	thread_collection(pthread_t *threads, int n_philo)
 	{
 		if (pthread_join(threads[i], NULL) != 0)
 			ft_error(join_err);
-		printf("parent collected %ld\n", i + 1);
 		i++;
 	}
 	free(threads);
@@ -93,13 +91,10 @@ int	ft_philo(t_data *data, t_philo **philos)
 		free(threads);
 		return (data->error);
 	}
-	pthread_mutex_lock(data->lock + DATA);
+	pthread_mutex_lock(data->lock + GAME);
 	gettimeofday(&time, NULL);
 	data->start = time.tv_sec * 1000 + time.tv_usec / 1000;
-	printf("parent at monitoring\n");
 	monitor_threads(data, philos);
-	printf("parent monitoring done\n");
 	thread_collection(threads, data->n_philo);
-	printf("parent collecting done\n");
 	return (data->error);
 }
