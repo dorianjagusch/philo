@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 03:02:56 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/14 16:00:48 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/14 21:27:51 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	fill_data(int ac, char **av, t_data *data)
 
 	data->n_philo = is_valid(av[1]);
 	i = 0;
-	while (i < ac - 2 && data->n_philo)
+	while (i < 3 && data->n_philo)
 	{
 		data->times[i] = is_valid(av[i + 2]);
 		if (data->times[i] < 0 || data->n_philo < 0)
@@ -75,10 +75,8 @@ static int	fill_data(int ac, char **av, t_data *data)
 
 t_data	*init_data(int ac, char **av)
 {
-	size_t			i;
 	t_data			*data;
 
-	i = 1;
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (NULL);

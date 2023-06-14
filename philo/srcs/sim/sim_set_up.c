@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 04:12:36 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/14 16:25:58 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/14 21:05:25 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,31 @@
 
 static void	monitor_threads(t_data *data, t_philo **philo)
 {
-	int	i;
+	// int	i;
 
-	i = 0;
+	// i = 0;
 	data->active += 1;
 	pthread_mutex_unlock(data->lock + GAME);
-	while (1)
-	{
-		usleep(100 + (100 * philo[0]->large));
-		pthread_mutex_lock(data->lock + DATA);
-		if (philo[i]->tod < get_time() - data->start || data->ended)
-		{
-			printf("Parent detected death of %d at %ld and should die at %ld\n", i + 1,
-				get_time() - data->start, philo[i]->tod);
-			if (!data->ended)
-			{
-				data->ended = 1;
-				printf("Parent murdered %d at %ld and should die at %ld\n", i + 1,
-					get_time() - data->start, philo[i]->tod);
-			}
-			break ;
-		}
-		i = (i + 1) % data->n_philo;
-		pthread_mutex_unlock(data->lock + DATA);
-	}
+	// while (1)
+	// {
+	// 	usleep(100 + (100 * philo[0]->large));
+	// 	pthread_mutex_lock(data->lock + DATA);
+	// 	if (philo[i]->tod < get_time() - data->start || data->ended)
+	// 	{
+	// 		printf("Parent detected death of %d at %ld and should die at %ld\n", i + 1,
+	// 			get_time() - data->start, philo[i]->tod);
+	// 		if (!data->ended)
+	// 		{
+	// 			data->ended = 1;
+	// 			printf("Parent murdered %d at %ld and should die at %ld\n", i + 1,
+	// 				get_time() - data->start, philo[i]->tod);
+	// 		}
+	// 		pthread_mutex_unlock(data->lock + DATA);
+	// 		break ;
+	// 	}
+	// 	i = (i + 1) % data->n_philo;
+	// 	pthread_mutex_unlock(data->lock + DATA);
+	// }
 }
 
 static BOOL	set_up_threads(t_philo **philos, t_data *data, int n_philo,

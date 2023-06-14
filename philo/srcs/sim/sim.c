@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 12:17:15 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/14 16:22:15 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/14 22:00:37 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,18 @@ static void	ft_mutex_barrier(int *n_active, int n_philo, pthread_mutex_t *lock)
 	pthread_mutex_unlock(lock);
 }
 
-// static void	update_meals(t_philo *philo)
-// {
-// 	if (philo->data->meals > 0)
-// 	{
-// 		printf("philo %d has %d meals left\n", philo->id, philo->meals_left);
-// 		printf("updated meal\n");
-// 		if (--philo->meals_left == 0)
-// 		{
-// 			pthread_mutex_lock(philo->data->lock + DATA);
-// 			--philo->data->active;
-// 			pthread_mutex_unlock(philo->data->lock + DATA);
-// 		}
-// 	}
-// }
+static void	update_meals(t_philo *philo)
+{
+	if (philo->data->meals > 0)
+	{
+		if (--philo->meals_left == 0)
+		{
+			pthread_mutex_lock(philo->data->lock + DATA);
+			--philo->data->active;
+			pthread_mutex_unlock(philo->data->lock + DATA);
+		}
+	}
+}
 
 static void	run_sim(t_philo *philo)
 {
@@ -50,7 +48,7 @@ static void	run_sim(t_philo *philo)
 			break ;
 		pthread_mutex_unlock(philo->data->lock + DATA);
 		philo_eat(philo);
-		//update_meals(philo);
+		update_meals(philo);
 		usleep(10);
 		pthread_mutex_lock(philo->data->lock + DATA);
 		if (philo->data->ended || philo->data->active <= 1)
@@ -58,7 +56,7 @@ static void	run_sim(t_philo *philo)
 		pthread_mutex_unlock(philo->data->lock + DATA);
 		philo_action(philo, SLEEP);
 		usleep(1);
-		philo_wait(philo, SLEEP);
+		philo_wait(philo, philo->data->times[SLEEP]);
 		pthread_mutex_lock(philo->data->lock + DATA);
 		if (philo->data->ended || philo->data->active <= 1)
 			break ;
@@ -80,7 +78,7 @@ void	*routine(void *arg)
 	if (philo->id % 2 == 0)
 	{
 		philo_action(philo, THINK);
-		usleep(SLEEP_TIME + (80 * philo->large));
+		philo_wait(philo, philo->data->times[EAT] * 0.1);
 	}
 	run_sim(philo);
 	return ((void *) NULL);

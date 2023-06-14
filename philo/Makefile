@@ -6,7 +6,7 @@
 #    By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 11:46:33 by djagusch          #+#    #+#              #
-#    Updated: 2023/06/14 16:16:28 by djagusch         ###   ########.fr        #
+#    Updated: 2023/06/14 22:08:18 by djagusch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ DEBUG = philo_debug
 all: $(NAME) $(DEBUG)
 
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJS) -lpthread -o $(NAME) -O2
+	@$(CC) $(CFLAGS) $(OBJS) -lpthread -o $(NAME) -O3
 	@echo "$(COLOUR_GREEN) $(NAME) created$(COLOUR_END)"
 
 $O:
@@ -69,7 +69,7 @@ $O/%.o: $S/%.c $(HEADER) | $O
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(DEBUG): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) -g -fsanitize=address $(OBJS) -lpthread -o philo_debug -static-libsan
+	@$(CC) $(CFLAGS) -g -fsanitize=address $(OBJS) -lpthread -o philo_debug -static-libasan
 	@echo "$(COLOUR_GREEN) $(DEBUG) created$(COLOUR_END)"
 
 ### CLEANING
