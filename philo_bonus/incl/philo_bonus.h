@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 02:40:22 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/15 16:47:06 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/15 20:11:24 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,12 @@
 # include "ft_error_bonus.h"
 # include <unistd.h>
 # include <semaphore.h>
+# include <pthread.h>
 # include <limits.h>
+# include <fcntl.h>           /* For O_* constants */
+# include <sys/stat.h>        /* For mode constants */
+# include <sys/wait.h>
+# include <errno.h>
 # include <signal.h>
 # include <sys/time.h>
 
@@ -40,27 +45,27 @@
 
 typedef struct s_data
 {
-	long			start;
-	int				active;
-	int				n_philo;
-	long			times[3];
-	int				ended;
-	int				meals;
-	int				*pids;
-	sem_t			*lock;
-	sem_t			*forks;
-	int				error;
-}					t_data;
+	long	start;
+	int		active;
+	int		n_philo;
+	long	times[3];
+	int		ended;
+	int		meals;
+	int		*pids;
+	int		error;
+}			t_data;
 
 typedef struct s_philo
 {
-	int				id;
-	long			cur;
-	int				large;
-	long			tod;
-	int				meals_left;
-	t_data			*data;
-}					t_philo;
+	int		id;
+	long	cur;
+	int		large;
+	long	tod;
+	sem_t	*lock;
+	sem_t	*utensils;
+	int		meals_left;
+	t_data	*data;
+}			t_philo;
 
 t_data	*init_data(int ac, char **av);
 t_philo	**init_philos(t_data *data);

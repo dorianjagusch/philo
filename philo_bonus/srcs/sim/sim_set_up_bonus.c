@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 04:12:36 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/15 17:15:26 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/15 20:18:48 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static BOOL	set_up_procs(t_philo **philos, t_data *data, int n_philo)
 
 	i = 0;
 	death_time = data->times[DIE];
+	data->start = get_time();
 	while (i < n_philo)
 	{
 		data->pids[i] = fork();
@@ -40,19 +41,54 @@ static BOOL	set_up_procs(t_philo **philos, t_data *data, int n_philo)
 	return (1);
 }
 
-static void	proc_collection(t_data *data, int n_philo)
+static void	proc_collection(t_data *data, int n_philo,
+	sem_t *utensils, sem_t *lock)
 {
 	if (waitpid(-1, NULL, 0))
-		kill(0, SIGKILL);
+		kill(0, SIGTERM);
+	if (sem_close(utensils) < 0)
+		data->error = ft_error(sem_destroy_err);
+	if (sem_unlink("/utensils") < 0)
+		data->error = ft_error(sem_unlink_err);
+	if (sem_close(lock) < 0)
+		data->error = ft_error(sem_destroy_err);
+	if (sem_unlink("/game_lock") < 0)
+		data->error = ft_error(sem_unlink_err);
+	
 }
+
+void	set_sems(t_philo **philos, sem_t *utensils, sem_t *lock, int n_philo)
+{
+	int	i;
+	
+	i = -1;
+	while (++i < n_philo)
+	{
+		philos[i]->utensils = utensils;
+		philos[i]->lock = lock;
+	}
+}
+
 
 int	ft_philo(t_data *data, t_philo **philos)
 {
-	sem_wait(data->lock);
+	sem_t	*lock;
+	sem_t	*utensils;
+
+	
+	printf("Philos %d\n", data->n_philo);
+	lock = sem_open("/game_lock", O_CREAT, 0644, 1);
+	if (lock == SEM_FAILED)
+		data->error = ft_error(sem_create_err);
+	utensils = sem_open("/utensils", O_CREAT, 0644, data->n_philo);
+	if (utensils == SEM_FAILED)
+		data->error = ft_error(sem_create_err);
+	set_sems(philos, utensils, lock, data->n_philo);
+	sem_wait(lock);
 	set_up_procs(philos, data, data->n_philo);
 	printf("Parent set up procs\n");
-	sem_post(data->lock);
-	proc_collection(data, data->n_philo);
+	sem_post(lock);
+	proc_collection(data, data->n_philo, utensils, lock);
 	printf("Parent collected procs2\n");
 	return (data->error);
 }

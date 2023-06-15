@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 02:39:01 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/15 17:12:15 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/15 19:42:37 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,6 @@ void	ft_clear(t_data *data, t_philo **philo)
 	if (data)
 	{
 		n_philo = data->n_philo;
-		if (data->forks != SEM_FAILED)
-		{
-			sem_close(data->forks);
-			sem_unlink("/forks_nomnom");
-		}
-		printf("closed forks\n");
-		if (data->lock != SEM_FAILED)
-		{
-			sem_close(data->lock);
-			sem_unlink("/lockity_lock_lock");
-		}
-		printf("closed locks\n");
 		if (philo)
 			ft_free_array((void *)&philo, n_philo);
 		printf("freed philos\n");

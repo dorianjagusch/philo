@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 03:02:56 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/15 17:20:48 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/15 19:23:41 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,7 @@ t_data	*init_data(int ac, char **av)
 	if (!fill_data(ac, av, data))
 		return (NULL);
 	data->pids = ft_calloc(data->n_philo, sizeof(int));
-	printf("making %d forks for a %d amount\n", data->n_philo);
-	data->forks = sem_open("/forks_nomnom", O_CREAT, 0644, data->n_philo);
-	if (data->forks == SEM_FAILED)
-		data->error = ft_error(sem_create_err);
-	data->lock = sem_open("/lockity_lock_lock", O_CREAT, 0644, 1);
-	if (data->lock == SEM_FAILED)
-		data->error = ft_error(sem_create_err);
-	if (!data->pids || data->forks == SEM_FAILED || data->lock == SEM_FAILED)
+	if (!data->pids)
 		ft_clear(data, NULL);
 	return (data);
 }
