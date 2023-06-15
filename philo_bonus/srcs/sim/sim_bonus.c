@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 12:17:15 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/15 17:07:14 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/15 17:19:31 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	routine(t_philo	*philo)
 {
 	int		sleep_time;
 
-	sleep_time = philo->data->times[EAT] * (0.5 - (0.2 * philo->large));
+	sleep_time = philo->data->times[EAT] * (0.8 - (0.2 * philo->large));
 	ft_sem_barrier(philo, philo->data->lock);
 	printf("philo %d left barrier\n", philo->id);
 	set_time(philo, DEATH);

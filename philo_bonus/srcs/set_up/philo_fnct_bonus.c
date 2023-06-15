@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 03:02:54 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/15 11:31:33 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/15 17:21:26 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_philo	**init_philos(t_data *data)
 		philos[i]->id = i + 1;
 		philos[i]->data = data;
 		philos[i]->meals_left = data->meals;
+		philod[i]->large = ((LARGE - data->n_philo) >> (sizeof(int) * 8 - 1)) & 1;
 		i++;
 	}
 	return (philos);
