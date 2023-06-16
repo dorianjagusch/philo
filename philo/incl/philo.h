@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 02:40:22 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/14 16:12:16 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/16 10:02:26 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,13 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-# define N_MUT 3
+# define N_MUT 2
 
 # define BOOL int
 # define DATA 0
 # define GAME 1
-# define PRINT 2
 
-# define SLEEP_TIME 20
+# define LARGE 30
 
 # define CUR 0
 # define DEATH 1
@@ -71,7 +70,7 @@ void	*routine(void *arg);
 int		ft_philo(t_data *data, t_philo **philos);
 void	philo_action(t_philo *philo, int action);
 void	philo_eat(t_philo *philo);
-void	philo_wait(t_philo *philo, int action);
+void	philo_wait(t_philo *philo, int ms);
 long	set_time(t_philo *philo, int mode);
 long	get_time(void);
 long	ft_lmax(long a, long b);

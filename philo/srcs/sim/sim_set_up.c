@@ -6,45 +6,16 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 04:12:36 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/14 21:05:25 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/16 16:22:31 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	monitor_threads(t_data *data, t_philo **philo)
-{
-	// int	i;
-
-	// i = 0;
-	data->active += 1;
-	pthread_mutex_unlock(data->lock + GAME);
-	// while (1)
-	// {
-	// 	usleep(100 + (100 * philo[0]->large));
-	// 	pthread_mutex_lock(data->lock + DATA);
-	// 	if (philo[i]->tod < get_time() - data->start || data->ended)
-	// 	{
-	// 		printf("Parent detected death of %d at %ld and should die at %ld\n", i + 1,
-	// 			get_time() - data->start, philo[i]->tod);
-	// 		if (!data->ended)
-	// 		{
-	// 			data->ended = 1;
-	// 			printf("Parent murdered %d at %ld and should die at %ld\n", i + 1,
-	// 				get_time() - data->start, philo[i]->tod);
-	// 		}
-	// 		pthread_mutex_unlock(data->lock + DATA);
-	// 		break ;
-	// 	}
-	// 	i = (i + 1) % data->n_philo;
-	// 	pthread_mutex_unlock(data->lock + DATA);
-	// }
-}
-
 static BOOL	set_up_threads(t_philo **philos, t_data *data, int n_philo,
 		pthread_t *threads)
 {
-	size_t	i;
+	int		i;
 	long	death_time;
 
 	i = 0;
@@ -54,7 +25,7 @@ static BOOL	set_up_threads(t_philo **philos, t_data *data, int n_philo,
 		philos[i]->tod = death_time;
 		if (pthread_create(&(threads[i]), NULL, &routine, philos[i]) != 0)
 		{
-			ft_error(thread_err);
+			data->error = ft_error(thread_err);
 			return (0);
 		}
 		i++;
@@ -62,24 +33,26 @@ static BOOL	set_up_threads(t_philo **philos, t_data *data, int n_philo,
 	return (1);
 }
 
-static void	thread_collection(pthread_t *threads, int n_philo)
+static int	thread_collection(pthread_t *threads, int n_philo)
 {
-	size_t	i;
+	int	i;
+	int	error;
 
 	i = 0;
+	error = 0;
 	while (i < n_philo)
 	{
 		if (pthread_join(threads[i], NULL) != 0)
-			ft_error(join_err);
+			error = ft_error(join_err);
 		i++;
 	}
 	free(threads);
+	return (error);
 }
 
 int	ft_philo(t_data *data, t_philo **philos)
 {
 	pthread_t		*threads;
-	struct timeval	time;
 
 	threads = malloc(sizeof(pthread_t) * data->n_philo);
 	if (!threads)
@@ -92,10 +65,10 @@ int	ft_philo(t_data *data, t_philo **philos)
 		free(threads);
 		return (data->error);
 	}
-	pthread_mutex_lock(data->lock + GAME);
-	gettimeofday(&time, NULL);
-	data->start = time.tv_sec * 1000 + time.tv_usec / 1000;
-	monitor_threads(data, philos);
-	thread_collection(threads, data->n_philo);
+	pthread_mutex_lock(&(data->lock[GAME]));
+	data->start = get_time();
+	data->active += 1;
+	pthread_mutex_unlock(&(data->lock[GAME]));
+	data->error = thread_collection(threads, data->n_philo);
 	return (data->error);
 }

@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 03:02:56 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/14 21:27:51 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/16 10:02:20 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,11 @@ static pthread_mutex_t	*set_mutexes(int number)
 	{
 		if (pthread_mutex_init(mutexes + i, NULL))
 		{
-			while (--i > 0)
+			while (--i >= 0)
+			{
+				pthread_mutex_destroy(mutexes + i);
 				free(mutexes + i);
+			}
 			ft_error(mutex_create_err);
 			break ;
 		}
@@ -57,7 +60,7 @@ static int	fill_data(int ac, char **av, t_data *data)
 		if (data->times[i] < 0 || data->n_philo < 0)
 		{
 			ft_clear(data, NULL);
-			ft_error(type_err);
+			data->error = ft_error(type_err);
 			return (0);
 		}
 		i++;
@@ -67,7 +70,7 @@ static int	fill_data(int ac, char **av, t_data *data)
 	if ((data->meals < 0 && ac == 6))
 	{
 		free(data);
-		ft_error(type_err);
+		data->error = ft_error(type_err);
 		return (0);
 	}
 	return (1);

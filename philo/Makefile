@@ -6,7 +6,7 @@
 #    By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/14 11:46:33 by djagusch          #+#    #+#              #
-#    Updated: 2023/06/14 22:08:18 by djagusch         ###   ########.fr        #
+#    Updated: 2023/06/16 16:29:45 by djagusch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ COLOUR_END=\033[0m
 
 ### SET UP ###
 CC = cc
-CFLAGS = -Wall -Werror -Wall -I$I
+CFLAGS = -Wall -Werror -Wextra -I$I
 
 RM = /bin/rm -f
 RMDIR = /bin/rmdir -p
@@ -53,13 +53,13 @@ OBJS = $(patsubst $S/%,$O/%,$(SRCS:.c=.o))
 O_DIRS = $(dir $(OBJS))
 
 NAME = philo
-DEBUG = philo_debug
+#DEBUG = philo_debug
 
 ### RULES ###
-all: $(NAME) $(DEBUG)
+all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(OBJS) -lpthread -o $(NAME) -O3
+	@$(CC) $(CFLAGS) $(OBJS) -lpthread -o $(NAME) -O2
 	@echo "$(COLOUR_GREEN) $(NAME) created$(COLOUR_END)"
 
 $O:
@@ -68,9 +68,9 @@ $O:
 $O/%.o: $S/%.c $(HEADER) | $O
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(DEBUG): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) -g -fsanitize=address $(OBJS) -lpthread -o philo_debug -static-libasan
-	@echo "$(COLOUR_GREEN) $(DEBUG) created$(COLOUR_END)"
+#$(DEBUG): $(OBJS) $(LIBFT)
+#	@$(CC) $(CFLAGS) -g -fsanitize=address $(OBJS) -lpthread -o $(DEBUG) -static-libsan
+#	@echo "$(COLOUR_GREEN) $(DEBUG) created$(COLOUR_END)"
 
 ### CLEANING
 
@@ -81,8 +81,7 @@ clean:
 fclean : clean
 	@$(RM) $(NAME) $(DEBUG)
 	@echo "$(COLOUR_RED) $(NAME) removed$(COLOUR_END)"
-	@echo "$(COLOUR_RED) $(NAME) removed$(COLOUR_END)"
 
 re: fclean $(NAME)
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re

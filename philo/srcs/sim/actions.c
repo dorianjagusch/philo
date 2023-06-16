@@ -6,7 +6,7 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 14:25:28 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/14 21:52:23 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/16 16:25:16 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,15 @@ void	philo_wait(t_philo *philo, int ms)
 	end = philo->cur + ms;
 	while (set_time(philo, CUR) < end)
 	{
-		pthread_mutex_lock(philo->data->lock + DATA);
+		pthread_mutex_lock(&(philo->data->lock[DATA]));
 		if (philo->cur > philo->tod || philo->data->ended)
 		{
-			pthread_mutex_unlock(philo->data->lock + DATA);
+			pthread_mutex_unlock(&(philo->data->lock[DATA]));
 			philo_action(philo, DIE);
 			return ;
 		}
-		pthread_mutex_unlock(philo->data->lock + DATA);
+		pthread_mutex_unlock(&(philo->data->lock[DATA]));
+		usleep(200);
 	}
 	return ;
 }
@@ -60,22 +61,13 @@ void	philo_action(t_philo *philo, int action)
 		"has taken a fork"
 	};
 
-	pthread_mutex_lock(philo->data->lock + DATA);
-	if (philo->data->ended == 0)
+	pthread_mutex_lock(&(philo->data->lock[DATA]));
+	if (philo->data->ended == 0 && philo->data->active > 1)
 	{
-		//pthread_mutex_unlock(philo->data->lock + DATA);
-		//pthread_mutex_lock(philo->data->lock + PRINT);
 		printf("%lu %d %s\n", set_time(philo, CUR), philo->id,
 			actions[action]);
-		//pthread_mutex_unlock(philo->data->lock + PRINT);
 		if (action == DIE)
-		{
-			//pthread_mutex_lock(philo->data->lock + DATA);
 			philo->data->ended = 1;
-			printf("bitch %d dies by its own Hand\n", philo->id);
-			// pthread_mutex_unlock(philo->data->lock + DATA);
-			// return ;
-		}
 	}
-	pthread_mutex_unlock(philo->data->lock + DATA);
+	pthread_mutex_unlock(&(philo->data->lock[DATA]));
 }

@@ -6,21 +6,17 @@
 /*   By: djagusch <djagusch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 03:02:54 by djagusch          #+#    #+#             */
-/*   Updated: 2023/06/14 20:45:18 by djagusch         ###   ########.fr       */
+/*   Updated: 2023/06/15 11:41:04 by djagusch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	set_forks(t_data *data, t_philo *philo)	
+void	set_forks(t_data *data, t_philo *philo)
 {
-	//if (data->n_philo % 2 == 0)
-	//{
 		philo->fork1 = data->forks + (philo->id - 1);
 		philo->fork2 = data->forks + (philo->id % data->n_philo);
-	//}
-	//philo->fork1 = data->forks + ((philo->id + (philo->id & 1)) % data->n_philo);
-	//philo->fork2 = data->forks + ((philo->id  + (~philo->id  & 1)) % data->n_philo);
+		philo->large = ((LARGE - data->n_philo) >> (sizeof(int) * 8 - 1)) & 1;
 }
 
 t_philo	**init_philos(t_data *data)
@@ -45,7 +41,6 @@ t_philo	**init_philos(t_data *data)
 		philos[i]->data = data;
 		philos[i]->meals_left = data->meals;
 		set_forks(data, philos[i]);
-		philos[i]->large = ((50 - data->n_philo) >> (sizeof(int) * 8 - 1)) & 1;
 		i++;
 	}
 	return (philos);
