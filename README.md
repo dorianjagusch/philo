@@ -10,6 +10,8 @@
 
 ## Project Description
 
+ <img src="img/philo.png" width="70%" align="center">
+
 This repository contains the solution for the Philosophers project at [Hive Helsinki](https://www.hive.fi/). The Philosophers project is designed to teach students about synchronization techniques in a multithreaded environment using mutexes to protect the access to shared resources. In the bonus, instead of mutexes semaphores are required.
 
 The project requires you to implement the "Dining Philosophers" problem. In this problem, a certain number of philosophers sit at a round table with a bowl of spaghetti in front of each philosopher. 
