@@ -10,7 +10,7 @@
 
 ## Project Description
 
- <img src="img/philo.png" width="70%" align="center">
+ <img src="img/philo.png" width="70%" align="center" title="By Benjamin D. Esham / Wikimedia Commons, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=56559">
 
 This repository contains the solution for the Philosophers project at [Hive Helsinki](https://www.hive.fi/). The Philosophers project is designed to teach students about synchronization techniques in a multithreaded environment using mutexes to protect the access to shared resources. In the bonus, instead of mutexes semaphores are required.
 
