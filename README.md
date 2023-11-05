@@ -46,14 +46,14 @@ Before you start, ensure you have the following prerequisites:
    ```
 2.  Compile the project:
 
-  ```sh
-  make
-  ```
+    ```sh
+    make
+    ```
 3. Run the program with appropriate arguments:
 
-  ```sh
-    ./philo [number_of_philosophers] [time_to_die] [time_to_eat] [time_to_sleep] [number_of_times_each_philosopher_must_eat]
-  ```
+    ```sh
+      ./philo [number_of_philosophers] [time_to_die] [time_to_eat] [time_to_sleep] [number_of_times_each_philosopher_must_eat]
+    ```
 
 Replace the placeholders in square brackets with your desired values.
 
