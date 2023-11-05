@@ -57,7 +57,7 @@ Before you start, ensure you have the following prerequisites:
 
 Replace the placeholders in square brackets with your desired values.
 
-### Usage
+## Usage
 
 The program will start running, simulating the behavior of philosophers. You can observe their actions, and the program will report the actions taken by the philosophers.
 
